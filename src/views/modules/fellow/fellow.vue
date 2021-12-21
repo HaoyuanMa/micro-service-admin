@@ -46,10 +46,12 @@
         label="邮箱">
       </el-table-column>
       <el-table-column
-        prop="header"
         header-align="center"
         align="center"
         label="头像">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="viewPic(scope.row.header)">查看</el-button>
+        </template>
       </el-table-column>
       <el-table-column
         prop="price"
@@ -128,6 +130,9 @@
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+    <div v-show="showHead" @click="closePic" class="showPhoto">
+      <img class="img" :src="picSrc" alt="图片加载失败" />
+    </div>
   </div>
 </template>
 
@@ -136,6 +141,8 @@
   export default {
     data () {
       return {
+        showHead: false,
+        picSrc: '',
         dataForm: {
           key: ''
         },
@@ -155,6 +162,13 @@
       this.getDataList()
     },
     methods: {
+      viewPic (src) {
+        this.picSrc = src
+        this.showHead = true
+      },
+      closePic () {
+        this.showHead = false
+      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
@@ -232,3 +246,25 @@
     }
   }
 </script>
+
+<style>
+.showPhoto {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showPhoto .img {
+  display: block;
+  margin: auto 0;
+  max-width: 100%;
+  text-align: center;
+}
+</style>

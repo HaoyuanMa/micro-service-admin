@@ -16,8 +16,27 @@
     <el-form-item label="性别" prop="gender">
        <el-input v-model="dataForm.gender" placeholder="性别"></el-input>
     </el-form-item>
-    <el-form-item label="头像" prop="header">
-      <el-input v-model="dataForm.header" placeholder="头像"></el-input>
+    <el-form-item label="头像">
+      <template slot-scope="scope" id="imageUpload">
+        <VueCoreImageUpload
+          style="
+          border-radius: 4px;
+          border: 1px solid #dcdfe6;"
+          class="btn btn-primary"
+          crop="local"
+          cropRatio="1:1"
+          compress="80"
+          @imagechanged="imageChanged"
+          :isXhr="false"
+          :max-file-size="5242880"
+          :credentials="false"
+          inputAccept="image/*"
+          inputOfFile="file"
+          ref="upImg"
+          :text="btnTitle"
+        >
+        </VueCoreImageUpload>
+      </template>
     </el-form-item>
     <el-form-item label="定价" prop="price">
       <el-input v-model="dataForm.price" placeholder="定价"></el-input>
@@ -55,9 +74,14 @@
 </template>
 
 <script>
+  import VueCoreImageUpload from 'vue-core-image-upload'
   export default {
+    components: {
+      VueCoreImageUpload
+    },
     data () {
       return {
+        btnTitle: '上传头像',
         visible: false,
         editable: true,
         dataForm: {
@@ -87,9 +111,6 @@
           email: [
             { required: true, message: '邮箱不能为空', trigger: 'blur' }
           ],
-          header: [
-            { required: false, message: '头像不能为空', trigger: 'blur' }
-          ],
           gender: [
             { required: true, message: '性别不能为空', trigger: 'blur' }
           ],
@@ -115,6 +136,10 @@
       }
     },
     methods: {
+      imageChanged (src) {
+        this.dataForm.header = src
+        this.btnTitle = '已选择'
+      },
       init (id) {
         this.editable = true
         this.dataForm.id = id || 0
@@ -196,3 +221,9 @@
     }
   }
 </script>
+
+<style>
+  #imageUpload {
+    border: 1px solid;
+  }
+</style>
