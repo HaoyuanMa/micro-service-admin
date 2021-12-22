@@ -28,10 +28,12 @@
         label="用户名">
       </el-table-column>
       <el-table-column
-        prop="gender"
         header-align="center"
         align="center"
         label="性别">
+        <template slot-scope="scope">
+          <div>{{getGender(scope.row.gender)}}</div>
+        </template>
       </el-table-column>
       <el-table-column
         prop="mobile"
@@ -162,6 +164,9 @@
       this.getDataList()
     },
     methods: {
+      getGender: g => {
+        return g === 1 ? '男' : '女'
+      },
       viewPic (src) {
         this.picSrc = src
         this.showHead = true

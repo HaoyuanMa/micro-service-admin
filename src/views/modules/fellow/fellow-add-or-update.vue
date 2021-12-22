@@ -14,7 +14,15 @@
       <el-input v-model="dataForm.email" placeholder="邮箱"></el-input>
     </el-form-item>
     <el-form-item label="性别" prop="gender">
-       <el-input v-model="dataForm.gender" placeholder="性别"></el-input>
+      <el-dropdown trigger="hover" @command="setGender" style="width: 10%">
+        <span class="el-dropdown-link">
+          <el-input v-model="dataForm.gender" placeholder="性别"></el-input>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="1">男</el-dropdown-item>
+          <el-dropdown-item command="0">女</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </el-form-item>
     <el-form-item label="头像">
       <template slot-scope="scope" id="imageUpload">
@@ -136,6 +144,12 @@
       }
     },
     methods: {
+      setGender (command) {
+        this.dataForm.gender = command
+      },
+      getGender: g => {
+        return g === 1 ? '男' : '女'
+      },
       imageChanged (src) {
         this.dataForm.header = src
         this.btnTitle = '已选择'
