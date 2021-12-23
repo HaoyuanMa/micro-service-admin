@@ -98,10 +98,12 @@
         label="个性签名">
       </el-table-column>
       <el-table-column
-        prop="description"
         header-align="center"
         align="center"
         label="简介">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="viewText(scope.row.description)">查看</el-button>
+        </template>
       </el-table-column>
       <el-table-column
         prop="status"
@@ -132,9 +134,17 @@
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-    <div v-show="showHead" @click="closePic" class="showPhoto">
+    <div v-show="showHead" @click="closePicOrText" class="showPhoto">
       <img class="img" :src="picSrc" alt="图片加载失败" />
     </div>
+    <el-dialog
+      :visible="showText"
+      title="简介">
+      <span>{{textSrc}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="closePicOrText">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -143,8 +153,10 @@
   export default {
     data () {
       return {
+        showText: false,
         showHead: false,
         picSrc: '',
+        textSrc: '',
         dataForm: {
           key: ''
         },
@@ -167,11 +179,16 @@
       getGender: g => {
         return g === 1 ? '男' : '女'
       },
+      viewText (t) {
+        this.showText = true
+        this.textSrc = t
+      },
       viewPic (src) {
         this.picSrc = src
         this.showHead = true
       },
-      closePic () {
+      closePicOrText () {
+        this.showText = false
         this.showHead = false
       },
       // 获取数据列表

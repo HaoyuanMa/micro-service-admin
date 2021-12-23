@@ -119,9 +119,6 @@
           email: [
             { required: true, message: '邮箱不能为空', trigger: 'blur' }
           ],
-          gender: [
-            { required: true, message: '性别不能为空', trigger: 'blur' }
-          ],
           age: [
             { required: true, message: '年龄不能为空', trigger: 'blur' }
           ],
@@ -202,7 +199,7 @@
                 'username': this.dataForm.username,
                 'mobile': this.dataForm.mobile,
                 'email': this.dataForm.email,
-                'header': this.dataForm.header,
+                'header': this.dataForm.header || ' ',
                 'gender': this.dataForm.gender,
                 'price': this.dataForm.price,
                 'age': this.dataForm.age,
